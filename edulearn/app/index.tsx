@@ -21,7 +21,7 @@ export default function Welcome() {
           style={{ width: "100%", height: 400 }}
         />
       </Animated.View>
-      <Animated.View
+      <Animated.View  
         className=" w-full"
         entering={FadeInDown.duration(300).delay(200).springify()}
       >

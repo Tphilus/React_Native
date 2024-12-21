@@ -5,12 +5,10 @@ import Animated, { FadeInDown } from "react-native-reanimated";
 import { router } from "expo-router";
 import { useState } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
-
-interface Category {
-  id: string;
-  name: string;
-  icon: string;
-}
+import { Category, SearchResponse } from "@/interface";
+import axios from "axios";
+import { password, username } from "@/utils/apikeys";
+import { useQuery } from "@tanstack/react-query";
 
 const categories: Category = [
   { id: "business", name: "Business", icon: "briefcase" },
@@ -22,8 +20,27 @@ const categories: Category = [
   { id: "lifestyle", name: "Lifestyle", icon: "heart" },
 ];
 
+const fetchCourses = async (searchTerm: string): Promise<SearchResponse> => {
+  const response = await axios.get(`https://www.udemy.com/api-2.0/courses/`, {
+    params: { search: searchTerm },
+
+    auth: {
+      username: username,
+      password: password,
+    },
+  });
+
+  return response.data
+};
+
 export default function HomeScreen() {
   const [selectedCategory, setSelectedCategory] = useState("Business");
+
+  const {data, error, isLoading, refetch} = useQuery({
+    queryKey: ["searchCourses", selectedCategory],
+    queryFn: () => fetchCourses(selectedCategory),
+    enabled: true,
+  })
 
   const renderCategory = ({ item }: { item: Category }) => (
     <Pressable
