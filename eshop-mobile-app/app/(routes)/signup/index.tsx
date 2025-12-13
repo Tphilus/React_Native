@@ -16,24 +16,26 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-interface LoginFormData {
+interface signupFormData {
+  name: string;
   email: string;
   password: string;
 }
 
-export default function LoginScreen() {
+export default function SignupScreen() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  // Login Forms
-  const loginForm = useForm<LoginFormData>({
+  // Signup  Forms
+  const signupForm = useForm<signupFormData>({
     mode: "onChange",
     defaultValues: {
+      name: "",
       email: "",
       password: "",
     },
   });
 
-  const handleSignupNavigation = () => {
-    router.push("/(routes)/signup");
+  const handleLoginNavigation = () => {
+    router.push("/(routes)/login");
   };
 
   return (
@@ -49,22 +51,62 @@ export default function LoginScreen() {
           {/* Header  */}
           <View className="mt-8 mb-4">
             <Text className=" text-3xl font-bold text-gray-900 mb-2">
-              Welcome Back
+              Create Account{" "}
             </Text>
             <Text className=" text-gray-900 text-base">
-              Sign in to your account
+              Start exploring by creating your account
             </Text>
           </View>
 
           {/* Form fields  */}
-          <View className="gap-6 mt-8">
+          <View className=" gap-6 mt-8">
+            {/* Name Field */}
+            <View>
+              <Text className=" text-gray-800 font-medium text-base mb-2">
+                name
+              </Text>
+              <Controller
+                control={signupForm.control}
+                name="name"
+                rules={{
+                  required: "name is required",
+                }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <View
+                    className={`flex-row items-center bg-gray-50 rounded-xl px-4 py-4 border ${signupForm.formState.errors.name ? "border-red-500" : "border-gray-200"}`}
+                  >
+                    <Ionicons
+                      name="lock-closed-outline"
+                      size={20}
+                      color={"9CA3AF"}
+                    />
+                    <TextInput
+                      className="flex-1 ml-3 text-gray-800"
+                      placeholder="Enter your name"
+                      placeholderTextColor="#9CA3AF"
+                      value={value}
+                      onChangeText={onChange}
+                      onBlur={onBlur}
+
+                      //   editable={!loginMutation.isPending}
+                    />
+                    {signupForm.formState.errors.name?.message && (
+                      <Text className="text-red-500 text-sm mt-1">
+                        {signupForm.formState.errors.name?.message}
+                      </Text>
+                    )}
+                  </View>
+                )}
+              />
+            </View>
+
             {/* Email Field  */}
             <View>
               <Text className=" text-gray-800 font-medium text-base mb-2">
                 Email
               </Text>
               <Controller
-                control={loginForm.control}
+                control={signupForm.control}
                 name="email"
                 rules={{
                   required: "Email is required",
@@ -75,7 +117,7 @@ export default function LoginScreen() {
                 }}
                 render={({ field: { onChange, onBlur, value } }) => (
                   <View
-                    className={`flex-row items-center bg-gray-50 rounded-xl px-4 py-4 border ${loginForm.formState.errors.email ? "border-red-500" : "border-gray-200"}`}
+                    className={`flex-row items-center bg-gray-50 rounded-xl px-4 py-4 border ${signupForm.formState.errors.email ? "border-red-500" : "border-gray-200"}`}
                   >
                     <MaterialCommunityIcons
                       name="email-outline"
@@ -93,9 +135,9 @@ export default function LoginScreen() {
                       autoCapitalize="none"
                       //   editable={!loginMutation.isPending}
                     />
-                    {loginForm.formState.errors.email?.message && (
+                    {signupForm.formState.errors.email?.message && (
                       <Text className="text-red-500 text-sm mt-1">
-                        {loginForm.formState.errors.email?.message}
+                        {signupForm.formState.errors.email?.message}
                       </Text>
                     )}
                   </View>
@@ -109,14 +151,14 @@ export default function LoginScreen() {
                 Password
               </Text>
               <Controller
-                control={loginForm.control}
+                control={signupForm.control}
                 name="password"
                 rules={{
                   required: "Password is required",
                 }}
                 render={({ field: { onChange, onBlur, value } }) => (
                   <View
-                    className={`flex-row items-center bg-gray-50 rounded-xl px-4 py-4 border ${loginForm.formState.errors.password ? "border-red-500" : "border-gray-200"}`}
+                    className={`flex-row items-center bg-gray-50 rounded-xl px-4 py-4 border ${signupForm.formState.errors.password ? "border-red-500" : "border-gray-200"}`}
                   >
                     <Ionicons
                       name="lock-closed-outline"
@@ -146,35 +188,24 @@ export default function LoginScreen() {
                   </View>
                 )}
               />
-              {loginForm.formState.errors.password?.message && (
+              {signupForm.formState.errors.password?.message && (
                 <Text className="text-red-500 text-sm mt-1">
-                  {loginForm.formState.errors.password?.message}
+                  {signupForm.formState.errors.password?.message}
                 </Text>
               )}
             </View>
-
-            {/* Forgot Password  */}
-            <TouchableOpacity
-              className="self-end mt-2"
-              onPress={() => router.push("/(routes)/forgot-password")}
-              // disabled={loginMutation.isPending}
-            >
-              <Text className=" text-blue-600 font-medium ">
-                Forgot Password
-              </Text>
-            </TouchableOpacity>
           </View>
 
           {/* Submit Button  */}
           <TouchableOpacity
             className={` rounded-xl py-4 mt-8 ${
-              loginForm.formState.isValid ? "bg-blue-600" : "bg-gray-400"
+              signupForm.formState.isValid ? "bg-blue-600" : "bg-gray-400"
             }`}
-            // disabled={loginForm.handleSubmit(onlofinForm)}
-            // disabled={!loginForm.formState.isValid || LogingMutation.isValid}
+            // disabled={signupForm.handleSubmit(onlofinForm)}
+            // disabled={!signupForm.formState.isValid || LogingMutation.isValid}
           >
             <Text className=" text-white text-center text-lg font-medium">
-              {"Sign In"}
+              {"Sign Up"}
             </Text>
           </TouchableOpacity>
 
@@ -201,7 +232,7 @@ export default function LoginScreen() {
                 />
               </View>
               <Text className="text-gray-800 text-base">
-                Sign In with Google?
+                Sign Up with Google?
               </Text>
             </TouchableOpacity>
 
@@ -214,16 +245,16 @@ export default function LoginScreen() {
                 className="mr-3"
               />
               <Text className="text-gray-800 text-base">
-                Sign In with Facebook
+                Sign Up with Facebook
               </Text>
             </TouchableOpacity>
           </View>
 
-          {/* Switch to Sign Up Links */}
+          {/* Switch to Login Links */}
           <View className="flex-row justify-center mb-8 ">
-            <Text>Don&apos;t have an account? </Text>
-            <TouchableOpacity onPress={handleSignupNavigation}>
-              <Text className="text-blue-600 font-black text-sm">Sign Up</Text>
+            <Text>Already have an account? </Text>
+            <TouchableOpacity onPress={handleLoginNavigation}>
+              <Text className="text-blue-600 font-black text-sm">Login</Text>
             </TouchableOpacity>
           </View>
         </ScrollView>
