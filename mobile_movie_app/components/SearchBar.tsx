@@ -17,7 +17,7 @@ const SearchBar = ({ placeholder, onPress }: Props) => {
         tintColor="#ab8bff"
       />
       <TextInput
-        onPress={onPress}
+        onPress={onPress} 
         placeholder={placeholder}
         value=""
         onChangeText={() => {}}
