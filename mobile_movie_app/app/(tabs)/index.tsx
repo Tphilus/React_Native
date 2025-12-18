@@ -40,7 +40,9 @@ export default function Index() {
             className=" mt-10 self-center"
           />
         ) : movieError ? (
-          <Text>{movieError?.message}</Text>
+          <Text className="flex-1 text-white text-3xl w-full items-center justify-start">
+            {movieError?.message}
+          </Text>
         ) : (
           <View className=" flex-1 mt-5">
             <SearchBar
