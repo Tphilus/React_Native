@@ -37,21 +37,21 @@ export default function Index() {
           <ActivityIndicator
             size="large"
             color="#0000ff"
-            className=" mt-10 self-center"
+            className="mt-10 self-center"
           />
         ) : movieError ? (
           <Text className="flex-1 text-white text-3xl w-full items-center justify-start">
             {movieError?.message}
           </Text>
         ) : (
-          <View className=" flex-1 mt-5">
+          <View className="flex-1 mt-5">
             <SearchBar
               onPress={() => router.push("/search")}
               placeholder="Search for a movie"
             />
 
             <>
-              <Text className=" text-lg text-white font-bold mt-5 mb-3 ">
+              <Text className="text-lg text-white font-bold mt-5 mb-3 ">
                 Latest Movie
               </Text>
 
@@ -66,7 +66,7 @@ export default function Index() {
                   paddingRight: 5,
                   marginBottom: 10,
                 }}
-                className=" mt-2 pb-32"
+                className="mt-2 pb-32"
                 scrollEnabled={false}
               />
             </>
