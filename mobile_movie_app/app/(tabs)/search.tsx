@@ -54,6 +54,12 @@ const Search = () => {
             {movieError && (
               <Text className=" ">Error: {movieError.message}</Text>
             )}
+
+            {
+              !movieLoading && !movieError && (
+                <View></View>
+              )
+            }
           </>
         }
       />
