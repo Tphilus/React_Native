@@ -3,16 +3,17 @@ import SearchBar from "@/components/SearchBar";
 import { icons } from "@/constants/icons";
 import { images } from "@/constants/images";
 import useFetch from "@/services/useFetch";
-import React from "react";
+import React, { useState } from "react";
 import { ActivityIndicator, FlatList, Image, Text, View } from "react-native";
 import { fetchMovies } from "./api";
 
 const Search = () => {
+  const [searchQuery, setSearchQuery] = useState("");
   const {
     data: movies,
-    loading: movieLoading,
-    error: movieError,
-  } = useFetch(() => fetchMovies({ query: "" }));
+    loading,
+    error,
+  } = useFetch(() => fetchMovies({ query: searchQuery }), false);
   return (
     <View className="flex-1 bg-primary">
       <Image
@@ -40,10 +41,10 @@ const Search = () => {
               <Image source={icons.logo} className="w-12 h-10" />
             </View>
             <View className="my-5">
-              <SearchBar placeholder="Search movies..." />
+              <SearchBar placeholder="Search movies..." value={searchQuery}  />
             </View>
 
-            {movieLoading && (
+            {loading && (
               <ActivityIndicator
                 size="large"
                 color="#0000ff"
@@ -51,15 +52,18 @@ const Search = () => {
               />
             )}
 
-            {movieError && (
-              <Text className=" ">Error: {movieError.message}</Text>
+            {error && (
+              <Text className="text-red-500 px-3 my-3   ">
+                Error: {error.message}
+              </Text>
             )}
 
-            {
-              !movieLoading && !movieError && (
-                <View></View>
-              )
-            }
+            {!loading && !error && searchQuery.trim() && movies?.length > 0 && (
+              <Text className="text-xl text-white font-bold">
+                Search Result for{" "}
+                <Text className=" text-accent">{searchQuery}</Text>
+              </Text>
+            )}
           </>
         }
       />
